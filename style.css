@@ -1,3 +1,10 @@
+@media only screen and (max-width: 432px) {
+    /* For mobile phones: */
+    .subtitle {
+      display:none;
+    }
+}
+
 .content{
   height:100%;
   padding-top:94px;
@@ -8,7 +15,7 @@
 
 .header {
   z-index: 2;
-  background-color: #EAD2AC;
+  background-color: #E6B89C;
   height: 64px;
   max-height: 64px;
   width: 100%;
@@ -32,15 +39,19 @@
 }
 
 .buttons {
+  height:64px;
+  width: 25%;
   float: right;
-  padding-right:40px;
+  position:absolute;
+  right:5px;
 }
 .buttons h3{
+  position:fixed;
   cursor: pointer;
   transition: margin .25s, padding .25s;
-  margin-right: 45px;
   margin-top: 40px;
-  float:left;
+  float:right;
+  margin-right:20px;
   border-radius: 10px;
   padding-top: 8px;
   padding-bottom: 12px;
@@ -49,17 +60,24 @@
   background-color: #4281A4;
   color: #FFFFFF;
 }
-.buttons h3 a{
-  text-decoration: none;
+
+.buttons h3.blog {
+  right: 100px;
+}
+.buttons h3.about {
+  right:5px;
+}
+
+.header-text {
+  position:fixed;
+  left:75px;
+  white-space: nowrap;
+  float:left;
+  width: calc(100% - 264px);
 }
 
 .header img {
   float: left;
-}
-
-.header-text {
-  white-space: nowrap;
-  float:left;
 }
 
 .title {
@@ -73,6 +91,11 @@
   margin-top: 0px;
   margin-bottom: 0px;
   color: #444444;
+  width: calc(100% - 64px);
+}
+
+.buttons h3 a{
+  text-decoration: none;
 }
 
 body {
