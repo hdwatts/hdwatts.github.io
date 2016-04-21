@@ -23,6 +23,17 @@
     <meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
   </head>
+  <script>
+    function minimize(){
+      post = document.getElementById('post_1');
+      maxheight = document.getElementById('post_1').style.maxHeight;
+      if (maxheight != "65px") {
+        post.style.maxHeight = "65px";
+      }else{
+        post.style.maxHeight = "450px";
+      }
+    }
+  </script>
   <body>
     <div class="header">
       <img src="images/watts-logo2.png" width="64px" height="64px">
@@ -37,8 +48,8 @@
     </div>
     <div class="content">
       <div class="posts">
-        <div class="post">
-          <div class="post_head textShadow"><h1>Blog Post Title</h1><p>04/20/2016</p></div>
+        <div class="post" id="post_1">
+          <div class="post_head textShadow" onClick="minimize()"><h1>Blog Post Title</h1><p>04/20/2016</p></div>
           <div class="post_body">
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices quis lectus dapibus condimentum. Quisque mollis tincidunt lectus non ornare. Phasellus accumsan venenatis eros a condimentum. Phasellus vulputate enim at rutrum blandit. Nullam porta, orci quis ultrices porttitor, velit arcu rutrum arcu, ac condimentum felis risus eu turpis. Praesent vitae quam aliquam ante feugiat auctor. Etiam ut felis a augue cursus tincidunt. Nam mattis, mi a porta laoreet, purus massa faucibus ex, a bibendum ipsum elit finibus eros.<br><br>Aliquam nec nulla tincidunt, euismod metus a, efficitur nisl. Mauris eu convallis arcu. Integer pulvinar dapibus eros lobortis hendrerit. Integer vitae feugiat lacus. Donec interdum consectetur felis in semper. Nunc tincidunt at magna ac rhoncus. Aenean gravida faucibus eros et luctus. Suspendisse accumsan suscipit malesuada. Nunc augue erat, hendrerit vitae dui nec, aliquet mattis urna. Nunc molestie elit nec blandit placerat. Nam nec ornare felis. Duis venenatis, urna id pulvinar molestie, mi dui porta sem, a laoreet lectus ipsum in metus.<br><br>Quisque eget interdum mauris, in gravida metus. Aenean vel nulla velit. Duis lobortis ultricies iaculis. Nullam convallis fringilla volutpat. Morbi nisi arcu, maximus ac eros a, consectetur tempus sapien. Aliquam tempor tellus ut nulla ullamcorper, vel tincidunt nulla malesuada. Aliquam rhoncus neque in aliquam laoreet. Integer ac metus a quam sagittis vehicula. In dignissim scelerisque felis a tempus. Nulla semper magna lectus, at malesuada ante commodo eu. Nulla quis accumsan nisl.<br><br>Curabitur tincidunt, leo eget tincidunt rutrum, metus nibh imperdiet sem, tincidunt tristique eros libero vel orci. Donec ut urna id dolor elementum consectetur quis quis neque. Sed nec aliquam nisl. Nulla scelerisque velit pharetra ex efficitur placerat. Sed porta faucibus ligula, blandit aliquet ex imperdiet sed. Suspendisse eget lectus ut sem aliquet tempus. Vestibulum eget metus justo. Integer lacinia tortor eget quam efficitur, ac luctus sem vehicula. Proin non tellus consectetur, tincidunt ipsum in, vestibulum nulla. Mauris porttitor, purus nec tincidunt sodales, risus mi placerat lectus, eu lacinia arcu nulla vehicula purus. Cras dapibus sed magna ut finibus. Ut tincidunt lacus tempor, bibendum metus sed, convallis erat. Quisque feugiat nunc ut sagittis scelerisque.</p>
           </div>

@@ -10,18 +10,29 @@
   margin-right:auto;
   min-width:340px;
   max-width:575px;
+  margin-bottom: 30px;
 }
 
 .post {
+  min-height: 65px;
+  max-height: 450px;
+  -moz-transition: max-height .5s;
+  -ms-transition: max-height .5s;
+  -o-transition: max-height .5s;
+  -webkit-transition: max-height .5s;
+  transition: max-height .5s;
   margin-top:25px;
   background-color: #4281A4;
   padding: 15px;
+  overflow-y: hidden;
   border-radius:10px;
-  box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.75),
+              inset -7px -5px 7px -5px rgba(0,0,0,0.75);
 }
 
 .post_head{
   color: white;
+  cursor: pointer;
 }
 
 .textShadow{
@@ -32,6 +43,7 @@
   background-color: #9CAFB7;
   padding: 10px;
   border-radius: 10px;
+  max-height: 340px;
 }
 
 .header {
