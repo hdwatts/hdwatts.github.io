@@ -1,4 +1,4 @@
-@media only screen and (max-width: 432px) {
+@media (max-width: 445px) {
     /* For mobile phones: */
     .subtitle {
       display:none;
