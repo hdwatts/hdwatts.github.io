@@ -1,0 +1,104 @@
+<html>
+<head>
+	<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+
+	<script>
+		$(function(){
+			doc = $(document),
+			canvas = $('#mandala'),
+			ctx = canvas[0].getContext('2d');
+			origin = {x:canvas[0].width / 2, y: canvas[0].height / 2};
+			console.log(origin);
+			var moving = false;
+			prev = {};
+			prev2 = {};
+			color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+
+			canvas.on("mousedown", function(e){
+				moving = true;
+				prev.x = e.pageX;
+			    prev.y = e.pageY;
+			    prev2.x = prev.x;
+			    prev2.y = prev.y;
+			    setTimeout(startLoop, 10);
+			});
+
+			canvas.on("mouseleave mouseup", function(e){
+				moving = false;
+			});
+
+			canvas.on("mousemove", function(e){
+				if (moving==true) {
+				    var x = e.pageX;
+				    var y = e.pageY;
+
+				    //drawLine(prev.x, prev.y, x, y, color);
+				}
+			});
+		});
+		var count = 0;
+		function startLoop() {
+			do {
+				var min = -8;
+				var max = 8;
+				x = prev.x + Math.random() * (max - min) + min;
+				y = prev.y + Math.random() * (max - min) + min;
+				if (find_angle(prev2, prev, {x:x, y:y}) < 90 || find_angle(prev2, prev, {x:x, y:y}) > 315) {
+					count++;
+				}
+			} while (
+				(find_angle(prev2, prev, {x:x, y:y}) < 90 || find_angle(prev2, prev, {x:x, y:y}) > 315)
+				|| x < 0 || y < 0 || x > canvas[0].width || y > canvas[0].height
+			);
+
+			if (count > 200) {
+				count = 0;
+				color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+			}
+
+	    	prepLine(origin, prev, x, y);
+
+	    	prev2.x = prev.x;
+	    	prev2.y = prev.y;
+		    prev.x = x;
+		    prev.y = y;
+
+			setTimeout(startLoop, 3);
+		}
+		function find_angle(A,B,C) {
+		    var AB = Math.sqrt(Math.pow(B.x-A.x,2)+ Math.pow(B.y-A.y,2));    
+		    var BC = Math.sqrt(Math.pow(B.x-C.x,2)+ Math.pow(B.y-C.y,2)); 
+		    var AC = Math.sqrt(Math.pow(C.x-A.x,2)+ Math.pow(C.y-A.y,2));
+		    return (Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB)) * 180) / Math.PI;
+		}
+
+
+		function prepLine(origin, prev, x, y) {
+			originPrev = calcDistance(prev.x, prev.y);
+		    originCurr = calcDistance(x,y);
+		    drawLine(origin.x + originPrev.x, origin.y + originPrev.y, origin.x + originCurr.x, origin.y + originCurr.y);
+		    drawLine(origin.x - originPrev.x, origin.y + originPrev.y, origin.x - originCurr.x, origin.y + originCurr.y);
+		    drawLine(origin.x + originPrev.x, origin.y - originPrev.y, origin.x + originCurr.x, origin.y - originCurr.y);
+		    drawLine(origin.x - originPrev.x, origin.y - originPrev.y, origin.x - originCurr.x, origin.y - originCurr.y);
+		}
+
+		function calcDistance(x,y){
+			return {x: origin.x - x, y: origin.y - y}
+		}
+		function drawLine(fromx, fromy, tox, toy){
+		  ctx.beginPath();
+		  ctx.strokeStyle = color
+		  ctx.lineWidth=3;
+		  ctx.moveTo(fromx, fromy);
+		  ctx.lineTo(tox, toy);
+		  ctx.stroke();
+		}
+	</script>
+</head>
+<body>
+	<canvas id="mandala" width="1920" height="1080"></canvas>
+</body>
+</html>
