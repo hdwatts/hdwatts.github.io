@@ -1,104 +1,257 @@
 <html>
 <head>
-	<script
+  <style>
+    #showHideButton{
+      position:absolute;
+      top:15;
+      left:15;
+    }
+    #settings {
+      display: none;
+      position:absolute;
+      top:0;
+      left:0;
+      width:600px;
+      height:300px;
+      background-color: lightyellow;
+    }
+    .nav-pills {
+      margin-left: 110px;
+    }
+    .red .active a,
+    .red .active a:hover {
+        background-color: orange !important;
+    }
+    .nav-pills > .active > a, .nav-pills > .active > a:hover {
+        background-color: red;
+    }
+    .colorOption.active{
+      background-color: lightgrey !important;
+      color: black !important;
+    }
+    .colorOption{
+      background-color: white !important;
+      color: black !important;
+      width:50%;
+    }
+  </style>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script
   src="https://code.jquery.com/jquery-3.1.1.min.js"
   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
   crossorigin="anonymous"></script>
 
-	<script>
-		$(function(){
-			doc = $(document),
-			canvas = $('#mandala'),
-			ctx = canvas[0].getContext('2d');
-			origin = {x:canvas[0].width / 2, y: canvas[0].height / 2};
-			console.log(origin);
-			var moving = false;
-			prev = {};
-			prev2 = {};
-			color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-			canvas.on("mousedown", function(e){
-				moving = true;
-				prev.x = e.pageX;
-			    prev.y = e.pageY;
-			    prev2.x = prev.x;
-			    prev2.y = prev.y;
-			    setTimeout(startLoop, 10);
-			});
+  <script>
+    var moving = false;
+    var colorArray = [];
+    var colorIndex = 0;
+    function showSetting(id) {
+      $('.page').each(function(index, elem){
+        if($(elem).attr('id') != id) {
+          $(elem).hide();
+        } else {
+          $(elem).show();
+        }
+      });
+    }
 
-			canvas.on("mouseleave mouseup", function(e){
-				moving = false;
-			});
+    function addPallette() {
+      $(".colorPallette").last().after($(".colorPallette").last().clone());
+      colorIndex = 0;
+    }
 
-			canvas.on("mousemove", function(e){
-				if (moving==true) {
-				    var x = e.pageX;
-				    var y = e.pageY;
+    function removePallette() {
+      if ($(".colorPallette").length > 1) {
+        $(".colorPallette").last().remove();
+        colorIndex = 0;
+      }
+    }
 
-				    //drawLine(prev.x, prev.y, x, y, color);
-				}
-			});
-		});
-		var count = 0;
-		function startLoop() {
-			do {
-				var min = -8;
-				var max = 8;
-				x = prev.x + Math.random() * (max - min) + min;
-				y = prev.y + Math.random() * (max - min) + min;
-				if (find_angle(prev2, prev, {x:x, y:y}) < 90 || find_angle(prev2, prev, {x:x, y:y}) > 315) {
-					count++;
-				}
-			} while (
-				(find_angle(prev2, prev, {x:x, y:y}) < 90 || find_angle(prev2, prev, {x:x, y:y}) > 315)
-				|| x < 0 || y < 0 || x > canvas[0].width || y > canvas[0].height
-			);
+    function updateColors(){
+      colorArray = [];
+      $(".colorPallette").each(function(index,elem){
+        colorArray.push($(elem).val());
+      });
+    }
 
-			if (count > 200) {
-				count = 0;
-				color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
-			}
+    $(function(){
+      //settings
+      $("#showHideButton").on("click", function(){
+        $("#settings").toggle();
+      });
 
-	    	prepLine(origin, prev, x, y);
+      //drawing
+      doc = $(document),
+      canvas = $('#mandala'),
+      ctx = canvas[0].getContext('2d');
+      ctx.canvas.width  = window.innerWidth;
+      ctx.canvas.height = window.innerHeight;
+      origin = {x:canvas[0].width / 2, y: canvas[0].height / 2};
+      prev = {};
+      prev2 = {};
+      color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+      $("#inputCurrColor").val(color);
 
-	    	prev2.x = prev.x;
-	    	prev2.y = prev.y;
-		    prev.x = x;
-		    prev.y = y;
+      canvas.on("mousedown", function(e){
+        if (!moving) {
+          prev.x = e.pageX;
+          prev.y = e.pageY;
+          prev2.x = prev.x;
+          prev2.y = prev.y;
+          moving = true;
+          setTimeout(startLoop, 2);
+        } else {
+          moving = false;
+        }
+      });
 
-			setTimeout(startLoop, 3);
-		}
-		function find_angle(A,B,C) {
-		    var AB = Math.sqrt(Math.pow(B.x-A.x,2)+ Math.pow(B.y-A.y,2));    
-		    var BC = Math.sqrt(Math.pow(B.x-C.x,2)+ Math.pow(B.y-C.y,2)); 
-		    var AC = Math.sqrt(Math.pow(C.x-A.x,2)+ Math.pow(C.y-A.y,2));
-		    return (Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB)) * 180) / Math.PI;
-		}
+      canvas.on("mouseleave mouseup", function(e){
+      });
+
+      canvas.on("mousemove", function(e){
+        if (moving==true) {
+            var x = e.pageX;
+            var y = e.pageY;
+        }
+      });
+    });
+    var count = 0;
+    function startLoop() {
+      var minAngle = parseInt($("#inputMinAngle").val());
+      var maxAngle = parseInt($("#inputMaxAngle").val());
+
+      do {
+        var min = parseInt($("#inputMinLineLen").val());
+        var max = parseInt($("#inputMaxLineLen").val());
+
+        x = prev.x + Math.random() * (max - min) + min;
+        y = prev.y + Math.random() * (max - min) + min;
+      } while (
+        (find_angle(prev2, prev, {x:x, y:y}) < minAngle ||
+          find_angle(prev2, prev, {x:x, y:y}) > maxAngle && Math.random() < .5)
+        || x < 0 || y < 0 || x > canvas[0].width || y > canvas[0].height
+      );
+      count++;
+
+      if (count > 200) {
+        count = 0;
+        if ($("#randomColor").is(":checked")) {
+          color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+        } else {
+          color = colorArray[colorIndex];
+          colorIndex++;
+          if (colorIndex >= colorArray.length) {
+            colorIndex = 0;
+          }
+        }
+        $("#inputCurrColor").val(color);
+      }
+
+      prepLine(origin, prev, x, y);
+
+      prev2.x = prev.x;
+      prev2.y = prev.y;
+      prev.x = x;
+      prev.y = y;
+
+      if (moving) {
+        setTimeout(startLoop, parseInt($("#inputFrameTimeout").val()));
+      }
+    }
+
+    function find_angle(A,B,C) {
+        var AB = Math.sqrt(Math.pow(B.x-A.x,2)+ Math.pow(B.y-A.y,2));
+        var BC = Math.sqrt(Math.pow(B.x-C.x,2)+ Math.pow(B.y-C.y,2));
+        var AC = Math.sqrt(Math.pow(C.x-A.x,2)+ Math.pow(C.y-A.y,2));
+        return (Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB)) * 180) / Math.PI;
+    }
 
 
-		function prepLine(origin, prev, x, y) {
-			originPrev = calcDistance(prev.x, prev.y);
-		    originCurr = calcDistance(x,y);
-		    drawLine(origin.x + originPrev.x, origin.y + originPrev.y, origin.x + originCurr.x, origin.y + originCurr.y);
-		    drawLine(origin.x - originPrev.x, origin.y + originPrev.y, origin.x - originCurr.x, origin.y + originCurr.y);
-		    drawLine(origin.x + originPrev.x, origin.y - originPrev.y, origin.x + originCurr.x, origin.y - originCurr.y);
-		    drawLine(origin.x - originPrev.x, origin.y - originPrev.y, origin.x - originCurr.x, origin.y - originCurr.y);
-		}
+    function prepLine(origin, prev, x, y) {
+      originPrev = calcDistance(prev.x, prev.y);
+        originCurr = calcDistance(x,y);
+        drawLine(origin.x + originPrev.x, origin.y + originPrev.y, origin.x + originCurr.x, origin.y + originCurr.y);
+        drawLine(origin.x - originPrev.x, origin.y + originPrev.y, origin.x - originCurr.x, origin.y + originCurr.y);
+        drawLine(origin.x + originPrev.x, origin.y - originPrev.y, origin.x + originCurr.x, origin.y - originCurr.y);
+        drawLine(origin.x - originPrev.x, origin.y - originPrev.y, origin.x - originCurr.x, origin.y - originCurr.y);
+    }
 
-		function calcDistance(x,y){
-			return {x: origin.x - x, y: origin.y - y}
-		}
-		function drawLine(fromx, fromy, tox, toy){
-		  ctx.beginPath();
-		  ctx.strokeStyle = color
-		  ctx.lineWidth=3;
-		  ctx.moveTo(fromx, fromy);
-		  ctx.lineTo(tox, toy);
-		  ctx.stroke();
-		}
-	</script>
+    function calcDistance(x,y){
+      return {x: origin.x - x, y: origin.y - y}
+    }
+
+    function drawLine(fromx, fromy, tox, toy){
+      ctx.beginPath();
+      ctx.strokeStyle = color
+      ctx.lineWidth=parseInt($("#inputLineWidth").val());
+      ctx.moveTo(fromx, fromy);
+      ctx.lineTo(tox, toy);
+      ctx.stroke();
+    }
+  </script>
 </head>
 <body>
-	<canvas id="mandala" width="1920" height="1080"></canvas>
+  <canvas id="mandala" width="1920" height="1080"></canvas>
+  <div id="settings">
+    <div id="header">
+      <ul class="nav nav-pills red">
+        <li role="presentation" class=""><a href="Javascript: showSetting('variables')">Variables</a></li>
+        <li role="presentation"><a href="Javascript: showSetting('colors')">Colors</a></li>
+        <li role="presentation"><a href="Javascript: showSetting('about')">About</a></li>
+      </ul>
+    </div>
+    <div id="content">
+      <div id="variables" class="page">
+        <label for=""></label>
+        <div class="input-group">
+          <input type="text" id="inputFrameTimeout" class="form-control" placeholder="Frame Timeout" aria-describedby="frameTimeout" value="2">
+          <span class="input-group-addon" id="frameTimeout">Frame Timeout</span>
+        </div>
+        <div class="input-group">
+          <input type="text" id="inputMinLineLen" class="form-control" placeholder="Min Line Length" aria-describedby="minLineLength" value="-15">
+          <span class="input-group-addon" id="minLineLength">Min Line Length</span>
+        </div>
+        <div class="input-group">
+          <input type="text" id="inputMaxLineLen" class="form-control" placeholder="Max Line Length" aria-describedby="maxLineLength" value="15">
+          <span class="input-group-addon" id="maxLineLength">Max Line Length</span>
+        </div>
+        <div class="input-group">
+          <input type="text" id="inputMinAngle" class="form-control" placeholder="Min Angle" aria-describedby="minAngle" value="45">
+          <span class="input-group-addon" id="minAngle">Min Angle</span>
+        </div>
+        <div class="input-group">
+          <input type="text" id="inputMaxAngle" class="form-control" placeholder="Max Angle" aria-describedby="maxLineAngle" value="315">
+          <span class="input-group-addon" id="maxAngle">Max Angle</span>
+        </div>
+        <div class="input-group">
+          <input type="text" id="inputLineWidth" class="form-control" placeholder="Line Width" aria-describedby="lineWidth" value="3">
+          <span class="input-group-addon" id="lineWidth">Line Width</span>
+        </div>
+      </div>
+      <div id="colors" class="page" style="display:none">
+        <div class="input-group">
+          <input type="color" id="inputCurrColor" class="form-control" placeholder="" aria-describedby="currColor" value="" onChange="">
+          <span class="input-group-addon" id="currColor">Current Color</span>
+        </div>
+        <div class="btn-group" data-toggle="buttons" style="width:100%">
+          <label class="btn btn-primary active colorOption">
+            <input type="radio" name="options" id="randomColor" autocomplete="off" checked> Random Colors
+          </label>
+          <label class="btn btn-primary colorOption">
+            <input type="radio" name="options" id="palletteColor" autocomplete="off"> Use Pallette
+          </label>
+        </div>
+        <input type="color" style="width:100%" class="colorPallette" placeholder="" value="#FFFFFF" onChange="updateColors()">
+        <input type="button" style="width:100%" placeholder="" value="Add to Pallette" onClick="addPallette()">
+        <input type="button" style="width:100%" placeholder="" value="Remove from Pallette" onClick="removePallette()">
+      </div>
+      <div id="about" class="page" style="display:none">
+        About
+      </div>
+    </div>
+  </div>
+  <button id="showHideButton">Show/Hide</button>
 </body>
 </html>
