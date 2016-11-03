@@ -47,6 +47,7 @@
     var moving = false;
     var colorArray = [];
     var colorIndex = 0;
+
     function showSetting(id) {
       $('.page').each(function(index, elem){
         if($(elem).attr('id') != id) {
@@ -86,8 +87,12 @@
       doc = $(document),
       canvas = $('#mandala'),
       ctx = canvas[0].getContext('2d');
-      ctx.canvas.width  = window.innerWidth;
-      ctx.canvas.height = window.innerHeight;
+      //ctx.canvas.width  = window.innerWidth;
+      //ctx.canvas.height = window.innerHeight;
+      ctx.canvas.width  = 1920;
+      ctx.canvas.height = 1080;
+      ctx.fillStyle = "white";
+      ctx.fillRect(0,0,1920,1080);
       origin = {x:canvas[0].width / 2, y: canvas[0].height / 2};
       prev = {};
       prev2 = {};
@@ -117,6 +122,7 @@
         }
       });
     });
+	var bigCount = 0;
     var count = 0;
     function startLoop() {
       var minAngle = parseInt($("#inputMinAngle").val());
@@ -131,12 +137,13 @@
       } while (
         (find_angle(prev2, prev, {x:x, y:y}) < minAngle ||
           find_angle(prev2, prev, {x:x, y:y}) > maxAngle && Math.random() < .5)
-        || x < 0 || y < 0 || x > canvas[0].width || y > canvas[0].height
+        || x < -15 || y < -15 || x > canvas[0].width + 15 || y > canvas[0].height + 15
       );
       count++;
 
-      if (count > 200) {
+      if (count > parseInt($("#inputColorFreq").val())) {
         count = 0;
+        bigCount++;
         if ($("#randomColor").is(":checked")) {
           color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
         } else {
@@ -147,6 +154,28 @@
           }
         }
         $("#inputCurrColor").val(color);
+      }
+
+      if (bigCount == 50) {
+      	bigCount = 0;
+      	var d = ctx.getImageData(0,0,canvas[0].width, canvas[0].height);
+      	var len = d.data.length;
+      	var emptyPixels = 0;
+      	var drawn = true;
+      	for(var i =0; i< len; i+=4) {
+		  if(d.data[i]==255&&d.data[i+1]==255&&d.data[i+2]==255&&d.data[i+3]==255) {
+		    emptyPixels++;
+		  }
+		}
+		if(emptyPixels > (canvas[0].width + canvas[0].height)/2) {
+		  console.log(emptyPixels);
+		  drawn = false;
+		  //break;
+	    }
+		if (drawn) {
+			window.open().location = document.getElementsByTagName("canvas")[0].toDataURL("image/‌​png");
+			ctx.clearRect(0, 0, canvas[0].width, canvas[0].height);
+		}
       }
 
       prepLine(origin, prev, x, y);
@@ -193,7 +222,7 @@
   </script>
 </head>
 <body>
-  <canvas id="mandala" width="1920" height="1080"></canvas>
+  <canvas id="mandala"></canvas>
   <div id="settings">
     <div id="header">
       <ul class="nav nav-pills red">
@@ -228,6 +257,10 @@
         <div class="input-group">
           <input type="text" id="inputLineWidth" class="form-control" placeholder="Line Width" aria-describedby="lineWidth" value="3">
           <span class="input-group-addon" id="lineWidth">Line Width</span>
+        </div>
+		<div class="input-group">
+          <input type="text" id="inputColorFreq" class="form-control" placeholder="Color Frequency" aria-describedby="colorFreq" value="200">
+          <span class="input-group-addon" id="colorFreq">Color Frequency</span>
         </div>
       </div>
       <div id="colors" class="page" style="display:none">
