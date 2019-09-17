@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+  <title>Chronograph Employee Home</title>
+  <meta name="viewport" content="width=1200, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.rippling.com/static/rippling-fonts.css">
+  <style>
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      margin: 0!important;
+      min-width: 1200px;
+      padding: 0!important;
+      font-family: ripplingFontLight;
+      -moz-osx-font-smoothing: grayscale;
+      -webkit-font-smoothing: antialiased;
+    }
+    html {
+      box-sizing: border-box;
+    }
+    *, *:before, *:after {
+      box-sizing: inherit;
+    }
+    :root {
+      --theme-dark-text-color: #182433;
+      --theme-dark-color: #182433;
+      --theme-primary-grey-color: #848484;
+      --theme-secondary-grey-color: #F7F7F7;
+    }
+    input:focus, textarea:focus {
+      outline: 0;
+    }
+    /* to hide conformation dialog on successful login */
+    .confirm-modal.overlay-container {
+      display: none;
+    }
+    /* of all form errors */
+    .error {
+      color: #C24F4F;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+  </style>
+</head>
+
+<body class="rebrand">
+  <div id="empdash"></div>
+  <div id="modalRoot"></div>
+  <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4D53K110I1HJ67w1Pzw6beGZm5Q7gpic&libraries=places" ></script>
+<script type="text/javascript" src="prerender.js"></script><script type="text/javascript" src="dashboard.js"></script></body>
+<link rel="stylesheet" href="https://cdn.rippling.com/static/rippling-icons.css">
+</html>
