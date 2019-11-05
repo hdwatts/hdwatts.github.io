@@ -94,6 +94,7 @@ function makeGuess(key) {
 
 function handleKeydown(e) {
     var key = e.key
+    console.log(e)
     if (!e.shiftKey && !e.metaKey && key.length == 1 && key.match(/[abcdefghijklmnopqrstuvwxyz]/gi)) {
         makeGuess(key)
     }
