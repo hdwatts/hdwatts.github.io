@@ -1,6 +1,7 @@
 var word = null
 var guessesRemaining = null
 var guesses = []
+var makingguess = false
 var gameover = null
 var score = localStorage.getItem("score") || 0
 
@@ -44,6 +45,7 @@ function update() {
         localStorage.setItem("score", score)
         newGame(3);
     }
+    makingguess = false
 }
 
 function setUnderscores() {   
@@ -78,7 +80,8 @@ function loadWord() {
 }
 
 function makeGuess(key) {
-    if (!gameover) {
+    if (!gameover && !makingguess) {
+        makingguess = true
         if(!guesses.includes(key)) {
             if (!word.includes(key)) {
                 guessesRemaining -= 1
