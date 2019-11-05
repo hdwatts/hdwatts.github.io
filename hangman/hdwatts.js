@@ -78,13 +78,15 @@ function loadWord() {
 }
 
 function makeGuess(key) {
-    if (!gameover && !guesses.includes(key)) {
-        if (!word.includes(key)) {
-            guessesRemaining -= 1
+    if (!gameover) {
+        if(!guesses.includes(key)) {
+            if (!word.includes(key)) {
+                guessesRemaining -= 1
+            }
+            guesses.push(key);
         }
-        guesses.push(key);
+        update();
     }
-    update();
 }
 
 function handleKeydown(e) {
