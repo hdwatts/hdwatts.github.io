@@ -95,6 +95,7 @@ function handleKeydown(e) {
 
 function onLoad() {
     loadWord()
+    console.log("Hello mikey")
 }
 
 window.addEventListener('load', onLoad)
