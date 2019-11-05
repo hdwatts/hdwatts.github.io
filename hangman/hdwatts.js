@@ -5,7 +5,7 @@ var gameover = null
 var score = localStorage.getItem("score") || 0
 
 function resetVariables() {
-    guessesRemaining = 6
+    guessesRemaining = 10
     guesses = []
     gameover = null
     resetContainer(document.querySelector("#new-game"))
