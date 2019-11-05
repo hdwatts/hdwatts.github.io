@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>Word Guessing Game</title>
+        <script src="./hdwatts.js"></script>
+        <link rel="stylesheet" type="text/css" href="./hdwatts.css">
+    </head>
+    <body>
+        <div>
+            <h1>Hangman v1.0</h1>
+            <h4>Type letters and try to guess the word.  You have 6 guesses.  At 2 guesses left the a hint will appear.</h3>
+        </div>
+        <div class="info">
+            <div>
+                <label for="guesses_num">Your score:</label><input disabled name="score" id="score" />
+            </div>
+            <div>
+                <label for="guesses_num">Guesses Remaining:</label><input disabled name="guesses_num" id="guesses_num" />
+            </div>
+            <div>
+                <label for="guesses">You've Guessed:</label><input disabled name="guesses" id="guesses" />
+            </div>
+        </div>
+        <div id="word-container">
+            Loading...
+        </div>
+        <div id="gameover"></div>
+        <div id="new-game"></div>
+    </body>
+</html>
