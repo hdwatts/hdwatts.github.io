@@ -1,0 +1,16 @@
+.info {
+    display: flex;
+    flex-direction: column;
+}
+
+.info div {
+    display: flex;
+}
+.info div label {
+    width: 150px;
+}
+
+#word-container span {
+    margin: 0px 5px;
+    font-size: 32;
+}
