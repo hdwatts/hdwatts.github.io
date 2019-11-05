@@ -19,6 +19,7 @@ function resetContainer(container) {
 }
 
 function newGame(seconds) {
+    gameover = true
     document.querySelector("#new-game").textContent = "New game in " + seconds + " seconds."
     if (seconds == 0) {
         loadWord();
